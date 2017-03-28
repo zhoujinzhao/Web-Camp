@@ -114,7 +114,7 @@ Status print(LinkStack *S)
     return OK;
 }
 
-int SW(char a,int b , int c)//计算
+double SW(char a,double b , double c)//计算
 {
     switch(a)
     {
@@ -131,12 +131,12 @@ int SW(char a,int b , int c)//计算
 void f()
 {
     int    table[] = {0,0,2,1,0,1,0,2};//查询运算符优先级表
-    int i,ina[100],j=0,temp; //i为循环变量，j和temp为数组下标
-    LinkStack *Sc;
+    int i,j=0,temp; //i为循环变量，j和temp为数组下标
+    LinkStack *Sc;double ina[100];
     char symbol;//记录抛出的符号
     Sc=(LinkStack *)malloc(sizeof(LinkStack));
     initStack(Sc);
-    int b=0;    // 当数字是十位或以上时记录
+    double b=0;    // 当数字是十位或以上时记录
     int priority=0; //记录栈顶元素优先级
     char s[100];
     printf("输入中缀表达式【只支持正整数四则运算,用英文()】：\n");gets(s);
@@ -150,8 +150,18 @@ void f()
             {
                 b=b*10+(s[i]-'0');
                 i++;
+                if(s[i]=='.')
+                {
+                    i++;double k=10;
+                    while(s[i]>='0'&&s[i]<='9')
+                    {
+                        b+=(s[i]-'0')/k;
+                        i++;k*=10;
+                    }
+                    continue;
+                }
             }
-            ina[j++]=b;printf("%d ",b);continue;
+            ina[j++]=b;printf("%.4f ",b);continue;
         }
         if(s[i]==41)    //如果是右括号的话，将栈中在左括号以上的所有运算符弹出,然后continue
         {
@@ -224,6 +234,6 @@ void f()
         ina[temp]=SW(symbol,ina[temp],ina[j]);
         ina[j]=0;
     }
-    printf("\n结果为%d\n",ina[0]);
+    printf("\n结果为%.4f\n",ina[0]);
 
 }
